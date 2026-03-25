@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convertix Hub</title>
+
+<style>
+    @keyframes scroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+    
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+header {
+    background: #0d6efd;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+nav {
+    background: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav button {
+    border: none;
+    background: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.container {
+    padding: 20px;
+    text-align: center;
+}
+
+.tools {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.tool {
+    background: orange;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+.box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.ad-box {
+    background: #333;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+input, select, button {
+    padding: 10px;
+    margin: 10px;
+    width: 90%;
+    border-radius: 8px;
+}
+
+button {
+    background: #0d6efd;
+    color: white;
+    border: none;
+}
+
+.switch {
+    color: #0d6efd;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+footer {
+    background: #0d6efd;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+}
+
+.don-btn {
+    background: orange;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <img src="https://i.postimg.cc/N5BfvtJm/file-0000000065f471f79ea985d1358c46d2.png" 
+             alt="Logo" 
+             style="width: 90px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+        <p style="margin-top: 10px;"><strong>Convertir tous vos fichiers gratuitement et sans inscription</strong></p>
+    </div>
+</header>
+
+<div style="background:black; color:white; padding:10px; overflow:hidden;">
+    <div id="rates" style="display:inline-block; white-space:nowrap; animation: scroll 15s linear infinite;">
+        💱 USD → CDF : <span id="usd"></span> | 
+        EUR → CDF : <span id="eur"></span> | 
+        GBP → CDF : <span id="gbp"></span>
+    </div>
+</div>
+
+<nav>
+    <button onclick="showSection('tools')">Outils</button>
+    <button onclick="showSection('converter')">Convertisseur</button>
+    <button onclick="showSection('blog')">Blog</button>
+</nav>
+
+<div class="container">
+
+<div class="ad-box">📢 Annonce publicitaire</div>
+
+<div class="box">
+    <h3>Conversion</h3>
+
+    <select id="conversionType">
+        <option value="pdf-docx">PDF à Word</option>
+        <option value="docx-pdf">Word à PDF</option>
+        <option value="jpg-pdf">Image à PDF</option>
+        <option value="pdf-jpg">PDF à Image</option>
+        <option value="mp4-mp3">MP4 à MP3</option>
+    </select>
+
+    <div class="switch" onclick="switchConversion()">🔁 Inverser</div>
+
+    <input type="file" id="fileInput">
+
+    <button onclick="openAd(); convertFile();">
+        <strong>Convertir</strong>
+    </button>
+
+    <p id="status"></p>
+</div>
+
+<div class="ad-box">📢 Annonce publicitaire</div>
+<div class="ad-box">📢 Annonce publicitaire</div>
+
+<div id="tools">
+
+<div class="tools">
+    <div class="tool" onclick="selectTool('pdf-docx')">PDF à Word</div>
+    <div class="tool" onclick="selectTool('docx-pdf')">Word à PDF</div>
+    <div class="tool" onclick="selectTool('jpg-pdf')">Image à PDF</div>
+    <div class="tool" onclick="selectTool('pdf-jpg')">PDF à Image</div>
+    <div class="tool" onclick="selectTool('mp4-mp3')">MP4 à MP3</div>
+    <div class="tool" onclick="alert('À connecter API TinyPNG')">Compresser image</div>
+    <div class="tool">Fusion PDF</div>
+    <div class="tool">Diviser PDF</div>
+    <div class="tool">Générateur CV</div>
+</div>
+
+<div class="ad-box">📢 Annonce publicitaire</div>
+<div class="ad-box">📢 Annonce publicitaire</div>
+
+</div>
+
+<div id="converter" style="display:none;">
+    <div class="box">
+        <h3>Convertisseur simple</h3>
+
+        <input type="number" id="value" placeholder="Valeur">
+        <select id="type">
+            <option value="mb-gb">MB → GB</option>
+            <option value="gb-mb">GB → MB</option>
+            <option value="min-h">Minutes → Heures</option>
+            <option value="h-min">Heures → Minutes</option>
+        </select>
+
+        <button onclick="convertUnit()">Convertir</button>
+
+        <p id="result"></p>
+    </div>
+</div>
+
+<div id="blog" style="display:none;">
+    <div class="box">
+        <h3>Blog</h3>
+        <p><b>Comment convertir PDF en Word gratuitement</b></p>
+        <p><b>Comment réduire la taille d’une image</b></p>
+        <p><b>Convertir vidéo en MP3 facilement</b></p>
+    </div>
+</div>
+
+</div>
+
+<script>
+
+window.addEventListener("load", function() {
+    if (!localStorage.getItem("visited")) {
+        setTimeout(() => {
+            window.open("TON_LIEN_ADSTERRA", "_blank");
+        }, 2000);
+        localStorage.setItem("visited", "true");
+    }
+});
+
+let opened = false;
+function openAd() {
+    if (!opened) {
+        window.open("TON_LIEN_ADSTERRA", "_blank");
+        opened = true;
+    }
+}
+
+function convertFile() {
+    let file = document.getElementById("fileInput").files[0];
+    if(!file){
+        alert("Choisir un fichier !");
+        return;
+    }
+    document.getElementById("status").innerText = "⏳ Conversion en cours...";
+
+    setTimeout(() => {
+        document.getElementById("status").innerHTML =
+        "✅ Conversion terminée !<br><br>" +
+        "<button onclick='downloadWithAd()' style='background:green;'>Télécharger le fichier</button>";
+    }, 2000);
+}
+
+function downloadWithAd() {
+    openAd();
+    alert("Téléchargement lancé !");
+}
+
+function showSection(section) {
+    document.getElementById("tools").style.display = "none";
+    document.getElementById("converter").style.display = "none";
+    document.getElementById("blog").style.display = "none";
+    document.getElementById(section).style.display = "block";
+}
+
+function selectTool(type) {
+    document.getElementById("conversionType").value = type;
+}
+
+function switchConversion() {
+    let select = document.getElementById("conversionType");
+    let map = {
+        "pdf-docx": "docx-pdf",
+        "docx-pdf": "pdf-docx",
+        "jpg-pdf": "pdf-jpg",
+        "pdf-jpg": "jpg-pdf",
+        "mp4-mp3": "mp3-mp4"
+    };
+    select.value = map[select.value] || select.value;
+}
+
+function convertUnit() {
+    let value = document.getElementById("value").value;
+    let type = document.getElementById("type").value;
+    let result;
+    if(type === "mb-gb") result = value / 1024;
+    if(type === "gb-mb") result = value * 1024;
+    if(type === "min-h") result = value / 60;
+    if(type === "h-min") result = value * 60;
+    document.getElementById("result").innerText = "Résultat : " + result;
+}
+
+function openDonation() {
+    let popup = window.open("", "Donation", "width=350,height=400");
+
+    popup.document.write(`
+        <html>
+        <head>
+            <title>Faire un don</title>
+        </head>
+        <!-- Début Carte de don premium -->
+<div class="donation-card-html">
+    <h2>🙏 Soutenez le projet</h2>
+    <p>Votre don nous aide à maintenir ce service gratuit et de qualité ❤️</p>
+
+    <!-- Moyens de paiement -->
+    <div class="pay-box">
+        <span class="method">📱 Airtel Money</span>
+        <span class="num">+243 980763477</span>
+    </div>
+
+    <div class="pay-box">
+        <span class="method">💳 M-Pesa</span>
+        <span class="num">+243 820369042</span>
+    </div>
+
+    <button class="don-btn-html">❤️ Faire un don</button>
+
+    <div class="footer-html">Chaque contribution compte 🙏</div>
+</div>
+<!-- Fin Carte de don premium -->
+        </html>
+    `);
+}
+
+async function loadRates() {
+    try {
+        let res = await fetch("https://api.exchangerate-api.com/v4/latest/USD");
+        let data = await res.json();
+
+        document.getElementById("usd").innerText = data.rates.CDF;
+        document.getElementById("eur").innerText = (data.rates.CDF / data.rates.EUR).toFixed(2);
+        document.getElementById("gbp").innerText = (data.rates.CDF / data.rates.GBP).toFixed(2);
+    } catch (e) {
+        document.getElementById("rates").innerText = "⚠️ Impossible de charger les taux";
+    }
+}
+
+loadRates();
+
+</script>
+
+<footer>
+    <p>© 2026 - Tous droits réservés</p>
+    <p><strong> Global Leads Agency 🇨🇩</strong></p>
+
+    <div style="margin-top: 10px;">
+        <button class="don-btn" onclick="openDonation()">Don</button>
+    </div>
+</footer>
+
+</body>
+</html>
